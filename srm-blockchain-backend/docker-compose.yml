@@ -1,0 +1,26 @@
+# docker-compose.yml
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    # Se elimina la dependencia de 'db'
+    depends_on:
+      - redis
+    # Carga las variables desde el archivo .env para que la app las use
+    env_file:
+      - .env
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  blockchain-node:
+    image: trufflesuite/ganache:latest
+    ports:
+      - "8545:8545"
+
+# Se elimina el servicio 'db' y el volumen 'postgres_data'
+# La base de datos ahora es gestionada por Supabase
